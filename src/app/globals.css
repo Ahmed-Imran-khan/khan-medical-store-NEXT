@@ -14,13 +14,67 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: white;
+    --foreground: #b4b3b3;
   }
 }
-
+::placeholder {
+  color: rgb(71, 71, 71);
+}
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+h1 {
+  color: black;
+  text-align: center;
+}
+input {
+  border: 1px solid grey;
+  padding: 5px 5px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+th, thead {
+  background-color: #04aa6d;
+  color: white;
+  padding-left: 5px;
+}
+td {
+  text-align: left;
+  padding: 8px;
+  color: black !important;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.CARD:hover {
+  transform: scale(110%);
+  transition: transform 0.5s;
+  cursor: pointer;
+  box-shadow: 0 0 20px yellowgreen !important;
+}
+.CARD-button:active {
+  background-color: rgb(255, 255, 255) !important;
+  color: green !important;
+}
+.Link:hover {
+  color: green !important;
+  &:active {
+    color: lightgreen !important;
+  }
+}
+@media screen and (max-width: 575px) {
+  .CART-TABLE {
+    overflow: scroll !important;
+  }
+}
+input{
+  color: red;
 }
