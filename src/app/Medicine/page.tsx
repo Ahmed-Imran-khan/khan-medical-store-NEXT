@@ -4,9 +4,10 @@ import PurchaseMed from "../redux/action";
 import Navbar from "../navbar/page";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import type { RootState } from "../redux/store";
 
 export default function Home() {
-  const noOfBooks = useSelector((state) => state.NumberOfMedicine);
+  const noOfBooks = useSelector((state: RootState) => state.NumberOfMedicine);
   const dispatch = useDispatch();
   const [product, setProduct] = useState<
     {

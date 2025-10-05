@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { database } from "@/app/lib/db";
+import type { RowDataPacket } from "mysql2";
 
 interface OrderItem {
   name: string;
@@ -13,13 +14,15 @@ interface OrderRow {
   address: string;
   items: string;
   total: number;
-  created_at: string; 
+  created_at: string;
 }
 
 export async function GET() {
   try {
-    const [rows]: [OrderRow[], any] = await database.query("SELECT * FROM orders");
-    const ordersWithParsedItems = rows.map(order => ({
+    const [rows] = await database.query<RowDataPacket[]>(
+      "SELECT * FROM orders"
+    );
+    const ordersWithParsedItems = rows.map((order) => ({
       ...order,
       items: JSON.parse(order.items) as OrderItem[],
     }));

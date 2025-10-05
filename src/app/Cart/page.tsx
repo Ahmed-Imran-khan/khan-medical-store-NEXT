@@ -113,7 +113,11 @@ export default function Cart() {
                   <div className="col-md-2 flex align-middle justify-center">
                     <button>
                       <div onClick={() => dispatch(RemoveMed(item.name))}>
-                        &#9938;
+                        <img
+                          src="../trash.svg"
+                          alt="trash"
+                          className="hover:w-5"
+                        />
                       </div>
                     </button>
                   </div>
@@ -125,9 +129,9 @@ export default function Cart() {
           {/* Right Column */}
           <div
             className="col-12 col-sm-6 order-1 order-sm-2"
-            style={{ backgroundColor: "#F2F0F0", height: "100%" }}
+            style={{ backgroundColor: "rgb(28 33 32)", height: "100%" }}
           >
-            <h1 className="mt-5 font-bold mb-5">Cart</h1>
+            <h1 className="mt-5 mb-5 text-light">Cart</h1>
             <div className="flex justify-center w-100">
               <div className="w-50">
                 <input
@@ -152,7 +156,7 @@ export default function Cart() {
                 />
               </div>
             </div>
-            <div className="flex justify-around px-5 my-4 text-gray-800">
+            <div className="flex justify-around px-5 my-4 text-gray-400">
               <p>Total Bill :</p>
               <p>
                 {selectedCards.reduce(
