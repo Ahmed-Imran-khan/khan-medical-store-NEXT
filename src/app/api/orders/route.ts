@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { database } from "@/app/lib/db";
+import { sql } from "@/app/lib/db";
 
 interface OrderItem {
   name: string;
@@ -13,19 +13,22 @@ interface OrderRow {
   address: string;
   items: string;
   total: number;
-  created_at: string; 
+  created_at: string;
 }
 
 export async function GET() {
   try {
-    const [rows]: [OrderRow[], any] = await database.query("SELECT * FROM orders");
-    const ordersWithParsedItems = rows.map(order => ({
+    const result = await sql("SELECT * FROM orders ORDER BY created_at DESC");
+    const rows: OrderRow[] = result.rows;
+
+    const ordersWithParsedItems = rows.map((order) => ({
       ...order,
       items: JSON.parse(order.items) as OrderItem[],
     }));
 
     return NextResponse.json(ordersWithParsedItems);
   } catch (error: any) {
+    console.error("GET Database Error:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -41,13 +44,12 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
+
     const itemsJsonString = JSON.stringify(items);
-    const query = `
-      INSERT INTO orders 
-      (customer_name, phone, address, items, total) 
-      VALUES (?, ?, ?, ?, ?)
-    `;
-    const [result]: any = await database.query(query, [
+
+    const query = `INSERT INTO orders (customer_name, phone, address, items, total) VALUES ($1, $2, $3, $4, $5) RETURNING id`;
+
+    const result = await sql(query, [
       customer_name,
       phone,
       address,
@@ -55,15 +57,17 @@ export async function POST(req: Request) {
       Number(total),
     ]);
 
+    const newOrderId = result.rows[0]?.id;
+
     return NextResponse.json({
       success: true,
       message: "Order placed successfully!",
-      orderId: result.insertId,
+      orderId: newOrderId,
       customer_name,
       total,
     });
   } catch (error: any) {
-    console.error("Database error:", error);
+    console.error("POST Database error:", error);
     return NextResponse.json(
       { error: "Failed to process order due to server error." },
       { status: 500 }
