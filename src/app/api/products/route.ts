@@ -1,10 +1,16 @@
 import { NextResponse } from "next/server";
-import { database } from "@/app/lib/db";
+import  database  from "@/app/lib/db";
+import pool from "@/app/lib/db";
+
+// export async function GET() {
+//   const [rows] = await pool.query("SELECT * FROM kmstore");
+//   return NextResponse.json(rows);
+// }
 
 // GET → Fetch all products
 export async function GET() {
   try {
-    const [rows] = await database.query("SELECT * FROM kmstore");
+    const [rows] = await pool.query("SELECT * FROM kmstore");
     return NextResponse.json(rows);
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
