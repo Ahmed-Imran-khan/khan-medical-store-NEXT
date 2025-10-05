@@ -7,3 +7,4 @@ const store = createStore(MedicineReducer);
 export type RootState = ReturnType<typeof MedicineReducer>;
 
 export default store;
+ 
