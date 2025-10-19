@@ -8,7 +8,7 @@ export default function Admin() {
 
   useEffect(() => {
     setTimeout(() => {
-      fetch("/api/products")
+      fetch("/api/users")
         .then((res) => res.json())
         .then((data) => {
           setProduct(data);
@@ -34,7 +34,7 @@ export default function Admin() {
 
   // Fetch Products
   async function fetchProducts() {
-    const res = await fetch("/api/products");
+    const res = await fetch("/api/users");
     const data = await res.json();
     setProduct(data);
   }
@@ -46,7 +46,7 @@ export default function Admin() {
   async function addProduct(e: React.FormEvent) {
     e.preventDefault();
     if (!name.trim()) return;
-    const res = await fetch("/api/products", {
+    const res = await fetch("/api/users", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ image, name, description, price: Number(price) }),

@@ -1,4 +1,5 @@
 "use client";
+import { TbTrashXFilled } from "react-icons/tb";
 import Navbar from "../navbar/page";
 import Link from "next/link";
 import type { RootState } from "../redux/store";
@@ -113,11 +114,7 @@ export default function Cart() {
                   <div className="col-md-2 flex align-middle justify-center">
                     <button>
                       <div onClick={() => dispatch(RemoveMed(item.name))}>
-                        <img
-                          src="../trash.svg"
-                          alt="trash"
-                          className="hover:w-5"
-                        />
+                        <TbTrashXFilled className="text-3xl text-red-800"/>
                       </div>
                     </button>
                   </div>
