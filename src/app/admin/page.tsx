@@ -44,6 +44,7 @@ export default function Admin() {
 
   // Add new product
   async function addProduct(e: React.FormEvent) {
+    
     e.preventDefault();
     if (!name.trim()) return;
     const res = await fetch("/api/users", {
@@ -51,8 +52,8 @@ export default function Admin() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ image, name, description, price: Number(price) }),
     });
+
     const data = await res.json();
-    console.log("POST response:", data); // 👈 log API response
     if (!res.ok) {
       alert("Error: " + (data.error || "Failed to add product"));
       return;

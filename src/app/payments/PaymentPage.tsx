@@ -1,18 +1,19 @@
 "use client";
 
-import { useRef, useState } from "react";
+import Link from "next/link";
+import Navbar from "../navbar/page";
+import { useState, useRef } from "react";
 import { useAppSelector } from "../redux/hooks";
 import type { RootState } from "../redux/store";
-import Navbar from "../navbar/page";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-// load html2pdf only in browser
 const html2pdf = typeof window !== "undefined" ? require("html2pdf.js") : null;
 
 export default function Payment() {
-  const receiptRef = useRef<HTMLDivElement>(null);
   const [isOrdering, setIsOrdering] = useState(false);
+  const [orders, setOrders] = useState<any[]>([]);
+  const receiptRef = useRef<HTMLDivElement>(null);
+
   const noOfBooks = useAppSelector((state) => state.NumberOfMedicine);
   const selectedCards = useAppSelector(
     (state: RootState) => state.selectedCards
@@ -23,15 +24,58 @@ export default function Payment() {
   const phone = params.get("phone");
   const address = params.get("address");
 
-  const date = new Date();
-  const formattedDate = date.toLocaleDateString("en-US");
+  const date = new Date().toLocaleDateString("en-US");
 
-  const orderTotal = selectedCards.reduce(
-    (total, item) => total + Number(item.price),
+  const total = selectedCards.reduce(
+    (sum, item) => sum + Number(item.price),
     0
   );
 
-  const downloadPdf = () => {
+  async function confirmOrder(e: React.FormEvent) {
+    e.preventDefault();
+    if (isOrdering) return;
+    if (!name || !phone || !address || selectedCards.length === 0) {
+      alert("Missing customer details or items to order.");
+      return;
+    }
+
+    setIsOrdering(true);
+
+    const orderData = {
+      customer_name: name,
+      phone,
+      address,
+      items: selectedCards,
+      total: total,
+    };
+
+    try {
+      const res = await fetch("/api/neworders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(orderData),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert("Error: " + (data.error || "Failed to place order"));
+        setIsOrdering(false);
+        return;
+      }
+
+      alert(`Order ID ${data.orderId} placed successfully!`);
+      setOrders([...orders, data]);
+      window.location.href = "/";
+    } catch (err) {
+      console.error("Error placing order:", err);
+      alert("Unexpected error occurred.");
+    } finally {
+      setIsOrdering(false);
+    }
+  }
+
+  function downloadPdf() {
     if (!html2pdf || !receiptRef.current) return;
     html2pdf()
       .from(receiptRef.current)
@@ -42,43 +86,6 @@ export default function Payment() {
         jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
       })
       .save();
-  };
-
-  async function confirmOrder() {
-    if (isOrdering) return;
-    setIsOrdering(true);
-    if (!name || !phone || !address || selectedCards.length === 0) {
-      alert("Missing customer details or items to order.");
-      setIsOrdering(false);
-      return;
-    }
-    const orderData = {
-      customer_name: name,
-      phone,
-      address,
-      items: selectedCards,
-      total: orderTotal,
-    };
-    try {
-      const res = await fetch("/api/orders", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(orderData),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        alert(`Order ${data.orderId} Confirmed! Thank you, ${name}.`);
-        window.location.href = "/";
-      } else {
-        alert(`Order Failed: ${data.error || "Server error"}`);
-      }
-    } catch (error) {
-      console.error("Fetch error:", error);
-      alert("An unexpected error occurred while confirming the order.");
-    } finally {
-      setIsOrdering(false);
-    }
   }
 
   return (
@@ -98,7 +105,7 @@ export default function Payment() {
               <i>Shop No 5 Military Accounts Society College Road Lahore</i>
             </p>
             <p>
-              <i>Date: {formattedDate}</i>
+              <i>Date: {date}</i>
             </p>
           </div>
           <div className="flex justify-between mt-5 mb-2">
@@ -121,8 +128,8 @@ export default function Payment() {
               </tr>
             </thead>
             <tbody>
-              {selectedCards.map((item, index) => (
-                <tr key={index}>
+              {selectedCards.map((item, i) => (
+                <tr key={i}>
                   <td>{item.name}</td>
                   <td>{item.description}</td>
                   <td>{item.price}</td>
@@ -131,9 +138,7 @@ export default function Payment() {
               <tr>
                 <td></td>
                 <td className="font-bold text-light bg-dark">Net Balance = </td>
-                <td className="font-bold text-light bg-dark">
-                  {orderTotal} / Rs
-                </td>
+                <td className="font-bold text-light bg-dark">{total} / Rs</td>
               </tr>
             </tbody>
           </table>
@@ -146,7 +151,7 @@ export default function Payment() {
           className="btn btn-danger px-5"
           disabled={isOrdering}
         >
-          {isOrdering ? "Processing..." : "Confirm order"}
+          {isOrdering ? "Processing..." : "Confirm Order"}
         </button>
         <button className="btn btn-info mx-3" onClick={downloadPdf}>
           Download Receipt
