@@ -7,14 +7,30 @@ import { RemoveMed } from "../redux/action";
 import { useAppSelector } from "../redux/hooks";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Cart() {
-  const [form, setForm] = useState({ name: "", phone: "", address: "" });
+  // const [form, setForm] = useState({ name: "", phone: "", address: "" });
   const dispatch = useDispatch();
   const noOfBooks = useAppSelector((state) => state.NumberOfMedicine);
   const selectedCards = useAppSelector(
     (state: RootState) => state.selectedCards
   );
+  const [form, setForm] = useState({ name: "", phone: "", address: "" });
+  const router = useRouter();
+
+  const total = selectedCards.reduce(
+    (sum, item) => sum + Number(item.price),
+    0
+  );
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!form.name || !form.phone || !form.address) return;
+    router.push(
+      `/payment?name=${form.name}&phone=${form.phone}&address=${form.address}`
+    );
+  };
   return (
     <div
       className="CART-TABLE"
@@ -114,7 +130,7 @@ export default function Cart() {
                   <div className="col-md-2 flex align-middle justify-center">
                     <button>
                       <div onClick={() => dispatch(RemoveMed(item.name))}>
-                        <TbTrashXFilled className="text-3xl text-red-800"/>
+                        <TbTrashXFilled className="text-3xl text-red-800" />
                       </div>
                     </button>
                   </div>
@@ -129,50 +145,59 @@ export default function Cart() {
             style={{ backgroundColor: "rgb(28 33 32)", height: "100%" }}
           >
             <h1 className="mt-5 mb-5 text-light">Cart</h1>
-            <div className="flex justify-center w-100">
-              <div className="w-50">
-                <input
-                  type="text"
-                  placeholder="Name"
-                  className="w-100 block my-4 bg-gray-300 border-0"
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                />
-                <input
-                  type="text"
-                  placeholder="Phone No."
-                  className="w-100 block my-4 bg-gray-300 border-0"
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                />
-                <input
-                  type="text"
-                  placeholder="Address"
-                  className="w-100 block my-4  bg-gray-300 border-0"
-                  onChange={(e) =>
-                    setForm({ ...form, address: e.target.value })
-                  }
-                />
+            <form onSubmit={handleSubmit} className="w-full">
+              <div className="flex justify-center w-100">
+                <div className="w-50">
+                  <input
+                    type="text"
+                    placeholder="Name"
+                    className="w-100 block my-4 bg-gray-300 border-0"
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    value={form.name}
+                    required
+                  />
+                  <input
+                    type="text"
+                    placeholder="Phone No."
+                    className="w-100 block my-4 bg-gray-300 border-0"
+                    onChange={(e) =>
+                      setForm({ ...form, phone: e.target.value })
+                    }
+                    value={form.phone}
+                    required
+                  />
+                  <input
+                    type="text"
+                    placeholder="Address"
+                    className="w-100 block my-4 bg-gray-300 border-0"
+                    onChange={(e) =>
+                      setForm({ ...form, address: e.target.value })
+                    }
+                    value={form.address}
+                    required
+                  />
+                </div>
               </div>
-            </div>
-            <div className="flex justify-around px-5 my-4 text-gray-400">
-              <p>Total Bill :</p>
-              <p>
-                {selectedCards.reduce(
-                  (total, item) => total + Number(item.price),
-                  0
-                )}
-                / Rs
-              </p>
-            </div>
-            <div className="flex justify-center-safe flex-wrap">
-              <Link
-                href={{
-                  pathname: "/payment",
-                  query: form, // sends ?name=...&phone=...&address=...
-                }}
-              >
-                <div className="btn btn-light mx-3">Checkout</div>
-              </Link>
-            </div>
+
+              <div className="flex justify-around px-5 my-4 text-gray-400">
+                <p>Total Bill :</p>
+                <p>{total} / Rs</p>
+              </div>
+
+              <div className="flex justify-center flex-wrap">
+                <button
+                  type="submit"
+                  disabled={!form.name || !form.phone || !form.address}
+                  className={`btn btn-light mx-3 ${
+                    !form.name || !form.phone || !form.address
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  }`}
+                >
+                  Checkout
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
