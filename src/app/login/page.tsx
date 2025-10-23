@@ -1,3 +1,3 @@
 export default function LoginPage() {
-  return <div>Login page placeholder</div>;
+  return <div>Login page</div>;
 }
