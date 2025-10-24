@@ -8,6 +8,7 @@ import { useAppSelector } from "../redux/hooks";
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { LiaCartPlusSolid } from "react-icons/lia";
 
 export default function Cart() {
   // const [form, setForm] = useState({ name: "", phone: "", address: "" });
@@ -103,7 +104,7 @@ export default function Cart() {
             style={{ border: "none", height: "100%", overflowY: "auto" }}
           >
             {selectedCards.length === 0 ? (
-              <p className="text-center text-gray-900">No items in cart</p>
+              <p className="text-center text-gray-900 mt-5">No items in cart</p>
             ) : (
               selectedCards.map((item, index) => (
                 <div key={index} className="row g-0 border shadow my-2">
@@ -141,10 +142,19 @@ export default function Cart() {
 
           {/* Right Column */}
           <div
-            className="col-12 col-sm-6 order-1 order-sm-2"
-            style={{ backgroundColor: "rgb(28 33 32)", height: "100%" }}
+            className="col-12 col-sm-6 order-1 order-sm-2 pt-5"
+            style={{
+              backgroundImage: "url(../bg-unsplash.jpg)",
+              backgroundSize: "cover",
+              height: "100%",
+            }}
           >
-            <h1 className="mt-5 mb-5 text-light">Cart</h1>
+            <div className="mt-5 flex justify-center">
+              <iframe
+                src="https://lottie.host/embed/c75c0984-cf74-4527-8ba5-6f15e205890e/WvOu5KqCYy.lottie"
+                style={{ width: "20%" }}
+              ></iframe>
+            </div>
             <form onSubmit={handleSubmit} className="w-full">
               <div className="flex justify-center w-100">
                 <div className="w-50">

@@ -5,6 +5,7 @@ import Navbar from "../navbar/page";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import type { RootState } from "../redux/store";
+import { AiFillProduct } from "react-icons/ai";
 
 export default function Home() {
   const noOfBooks = useSelector((state: RootState) => state.NumberOfMedicine);
@@ -53,9 +54,18 @@ export default function Home() {
   return (
     <div>
       <Navbar />
-      <div className="m-5 d-flex justify-content-center align-items-center">
-        <h1 style={{ fontWeight: "bolder" }}>ALL AVAILABLE PRODUCTS</h1>
+      <div className="mt-40  d-flex justify-content-center align-items-center">
+        <h1
+          style={{
+            fontWeight: "bolder",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          PRODUCTS <AiFillProduct />
+        </h1>
       </div>
+      <p className="text-center mb-5">Available Medicine in Khan Medical store</p>
       {/* seacrh bar */}
       <div className="d-flex justify-content-center pb-5">
         <div
@@ -90,7 +100,7 @@ export default function Home() {
         </div>
       </div>
       {/* CARDS */}
-      <div className="w-100 row row-cols-2 row-cols-sm-3 row-cols-md-6 justify-content-center">
+      <div className="w-100 row row-cols-2 row-cols-sm-3 row-cols-md-6 justify-content-center px-5">
         {product.length === 0 ? (
           <div className="text-center w-100 my-5">
             <div className="spinner-border text-success" role="status">

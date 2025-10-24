@@ -94,39 +94,33 @@ export default function Admin() {
 
   if (!isAuthorized)
     return (
-  <div>
-    <Navbar/>
-      <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
-        <h2 className="text-2xl font-bold mb-4">Admin Login</h2>
-        <form onSubmit={handleLogin} className="flex flex-col items-center">
-          <input
-            type="password"
-            placeholder="Enter admin password"
-            value={passwordInput}
-            onChange={(e) => setPasswordInput(e.target.value)}
-            className="border rounded px-3 py-2 mb-3 text-black"
-          />
-          <button
-            type="submit"
-            className="bg-blue-500 text-white px-4 py-2 rounded"
-          >
-            Login
-          </button>
-        </form>
+      <div>
+        <Navbar />
+        <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+          <h2 className="text-2xl font-bold mb-4">Admin Login</h2>
+          <form onSubmit={handleLogin} className="flex flex-col items-center">
+            <input
+              type="password"
+              placeholder="Enter admin password"
+              value={passwordInput}
+              onChange={(e) => setPasswordInput(e.target.value)}
+              className="border rounded px-3 py-2 mb-3 text-black"
+            />
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-4 py-2 rounded"
+            >
+              Login
+            </button>
+          </form>
+        </div>
       </div>
-
-    </div>);
+    );
 
   return (
     <div>
       <Navbar />
-      <nav aria-label="breadcrumb" className="m-4">
-        <ol className="breadcrumb">
-          <li className="breadcrumb-item active">Admin</li>
-        </ol>
-      </nav>
-
-      <div className="flex justify-center gap-4 mb-5">
+      <div className="flex justify-center gap-4 mb-5 mt-5 pt-5">
         <button
           onClick={() => setView("products")}
           className={`px-4 py-2 rounded ${
@@ -192,7 +186,7 @@ export default function Admin() {
             </form>
           </div>
 
-          <div className="row p-0 mx-0 flex justify-center content-center my-5">
+          <div className="row p-0 mx-0 flex justify-center content-center my-5 px-5">
             <table className="w-md px-5 col-lg-8 col-12">
               <thead>
                 <tr className="text-black">
