@@ -49,7 +49,35 @@ export default function Admin() {
     setProduct(data);
     setLoading(false);
   }
+  // Delete products
+  async function deleteProducts(id: number) {
+    const res = await fetch(`/api/users?id=${id}`, { method: "DELETE" });
+    if (!res.ok) {
+      alert("Error Deleting Product");
+    }
+    fetchProducts();
+  }
+  // Update products
+  async function updateProducts(id: number) {
+    const name = prompt("Enter new Name");
+    const description = prompt("Enter new Description");
+    const price = prompt("Enter new Price");
+    const image = prompt("Enter new URL of Image");
 
+    if (!name || !description || !price || !image)
+      return alert("All Feild Required");
+
+    const res = await fetch("/api/users", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ id, name, description, price, image }),
+    });
+    if (!res.ok) {
+      alert("Error Updating Product");
+    }
+    fetchProducts();
+    alert("Product Updated Successfully")
+  }
   // fetch orders
   async function fetchOrders() {
     const res = await fetch("/api/neworders");
@@ -96,6 +124,7 @@ export default function Admin() {
     return (
       <div>
         <Navbar />
+        {/* Login Page UI */}
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
           <h2 className="text-2xl font-bold mb-4">Admin Login</h2>
           <form onSubmit={handleLogin} className="flex flex-col items-center">
@@ -120,6 +149,7 @@ export default function Admin() {
   return (
     <div>
       <Navbar />
+      {/* buttons  */}
       <div className="flex justify-center gap-4 mb-5 mt-5 pt-5">
         <button
           onClick={() => setView("products")}
@@ -138,7 +168,7 @@ export default function Admin() {
           Orders
         </button>
       </div>
-
+      {/* Admin Page  */}
       {view === "products" ? (
         <div>
           <div className="m-5 flex justify-center items-center">
@@ -185,7 +215,6 @@ export default function Admin() {
               </button>
             </form>
           </div>
-
           <div className="row p-0 mx-0 flex justify-center content-center my-5 px-5">
             <table className="w-md px-5 col-lg-8 col-12">
               <thead>
@@ -194,6 +223,8 @@ export default function Admin() {
                   <td>Name</td>
                   <td>Details</td>
                   <td>Price</td>
+                  <td></td>
+                  <td></td>
                 </tr>
               </thead>
               <tbody>
@@ -226,6 +257,22 @@ export default function Admin() {
                         <td className="border px-3 py-1">{p.name}</td>
                         <td className="border px-3 py-1">{p.description}</td>
                         <td className="border px-3 py-1">{p.price}</td>
+                        <td className="border px-3 py-1" key={p.id}>
+                          <button
+                            className="btn btn-danger"
+                            onClick={() => deleteProducts(p.id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                        <td>
+                          <button
+                            className="btn btn-info"
+                            onClick={() => updateProducts(p.id)}
+                          >
+                            Update
+                          </button>
+                        </td>
                       </tr>
                     ))}
               </tbody>
@@ -233,6 +280,7 @@ export default function Admin() {
           </div>
         </div>
       ) : (
+        // order page
         <div className="m-5 items-center">
           <h1 className="font-bold mb-5">Orders</h1>
           <div className="row justify-center">
