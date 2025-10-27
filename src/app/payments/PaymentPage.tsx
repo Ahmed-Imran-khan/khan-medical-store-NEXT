@@ -91,7 +91,7 @@ export default function Payment() {
   return (
     <div>
       <Navbar />
-      <h1 className="my-5 font-serif">RECEIPT</h1>
+      <h1 className="font-serif" style={{marginTop:"10%"}}>RECEIPT</h1>
       <div className="row p-0 m-0 flex justify-center">
         <div className="mb-4 px-5 col-lg-8 col-12" ref={receiptRef}>
           <div style={{ lineHeight: "7px" }}>
