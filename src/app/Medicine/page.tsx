@@ -105,7 +105,7 @@ export default function Home() {
       <div className="w-100 row row-cols-2 row-cols-sm-3 row-cols-md-6 justify-content-center px-5">
         {product.length === 0 ? (
           <div className="text-center w-100 my-5 flex justify-center">
-            <img src="./original-unscreen.gif" alt="Loading..." style={{width:"10%"}} />
+            <img src="./original-unscreen.gif" alt="Loading..." style={{width:"15rem"}} />
           </div>
         ) : (
           product.map((p) => (
