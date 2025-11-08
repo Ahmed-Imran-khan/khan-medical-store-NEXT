@@ -76,7 +76,7 @@ export default function Admin() {
       alert("Error Updating Product");
     }
     fetchProducts();
-    alert("Product Updated Successfully")
+    alert("Product Updated Successfully");
   }
   // fetch orders
   async function fetchOrders() {
@@ -281,14 +281,16 @@ export default function Admin() {
         </div>
       ) : (
         // order page
-        <div className="m-5 items-center">
-          <h1 className="font-bold mb-5">Orders</h1>
+        <div className="m-5 items-center mt-5 pt-5">
+          <h1 style={{ fontWeight: "bolder" }} className="FONT mb-5">
+            Orders
+          </h1>
           <div className="row justify-center">
-            <div className="col-12 col-md-6 col-lg-6">
+            <div className="col-12 col-md-10 col-lg-10">
               {orders.map((p) => (
                 <div
                   key={p.id}
-                  className="border p-4 mb-4 rounded shadow bg-gray-200"
+                  className="border p-4 mb-4 rounded shadow bg-gray-200 "
                 >
                   <div className="text-black row justify-between font-bold mb-2">
                     <p className="col-6 col-md-3">
@@ -296,15 +298,17 @@ export default function Admin() {
                     </p>
                     <p className="col-6 col-md-3">Phone: {p.phone}</p>
                     <p className="col-6 col-md-3">Address: {p.address}</p>
-                    <p className="col-6 col-md-3">Total: {p.total} Rs</p>
+                    <p className="col-6  col-md-3">Total: {p.total} Rs</p>
                   </div>
-                  <h3 className="text-center mt-3 mb-2 text-danger">
-                    Ordered Items
-                  </h3>
-                  <div className="pt-2 text-center text-dark">
+
+                  <h3 className="mt-3 mb-2 text-danger">Ordered Items</h3>
+                  {/* here */}
+                  <div className="pt-2 text-center flex flex-wrap text-dark">
                     {p.items.map((item: any, i: number) => (
                       <p key={i} className="text-sm">
-                        {item.name}
+                        <div className="border-r-2 border-r-gray-950 px-3">
+                          {item.name}
+                        </div>
                       </p>
                     ))}
                   </div>
