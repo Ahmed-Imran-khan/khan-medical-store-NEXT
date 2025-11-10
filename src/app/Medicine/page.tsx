@@ -3,11 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 import PurchaseMed from "../redux/action";
 import Navbar from "../navbar/page";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { RootState } from "../redux/store";
 import { AiFillProduct } from "react-icons/ai";
-import { CarouselPlugin } from "../component/CarouselPlugin";
-import { CarouselPlugin2 } from "../component/CarouselPlugin2";
 
 export default function Home() {
   const noOfBooks = useSelector((state: RootState) => state.NumberOfMedicine);
@@ -52,6 +50,30 @@ export default function Home() {
       }
     }
   };
+
+  // carousel autpplay
+  const ref = useRef<HTMLDivElement>(null);
+  const speed = 2;
+  const interval = 20;
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let id: NodeJS.Timeout;
+    const tick = () => {
+      if (el.scrollLeft + el.clientWidth >= el.scrollWidth) {
+        el.scrollLeft = 0;
+      } else {
+        el.scrollLeft += speed;
+      }
+    };
+    const start = () => {
+      id = setInterval(tick, interval);
+    };
+    const stop = () => {
+      clearInterval(id);
+    };
+    start();
+  }, []);
 
   return (
     <div>
@@ -104,12 +126,111 @@ export default function Home() {
         </div>
       </div>
       {/* Carousel  */}
-      <div className="row w-full p-0 m-0">
-        <div className="col-6 col-lg-6">
-          <CarouselPlugin />
+      <div ref={ref} className="d-flex overflow-hidden w-100 m-0 p-0 pb-5">
+        <div className="col-3 mx-3">
+          <img
+            src="https://images.unsplash.com/photo-1628771065518-0d82f1938462?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870"
+            alt=""
+            width="100%"
+          />
         </div>
-        <div className="col-6 col-lg-6">
-          <CarouselPlugin2 />
+        <div className="col-3 mx-3">
+          <img
+            src="/logo.jpg"
+            alt=""
+            width="100%"
+          />
+        </div>
+        <div className="col-3 mx-3">
+          <img
+            src="https://images.unsplash.com/photo-1655313719848-23d645684e4a?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870"
+            alt=""
+            width="100%"
+          />
+        </div>
+        <div className="col-3 mx-3">
+          <img
+            src="https://images.unsplash.com/photo-1583604310111-9cd137d6ffe5?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870"
+            alt=""
+            width="100%"
+          />
+        </div>
+        <div className="col-3 mx-3">
+          <img
+            src="https://images.unsplash.com/photo-1631980838902-e1eea9c12c67?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870"
+            alt=""
+            width="100%"
+          />
+        </div>
+        <div className="col-3 mx-3">
+          <img
+            src="https://images.unsplash.com/photo-1631980839224-2554f0cb39f1?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870"
+            alt=""
+            width="100%"
+          />
+        </div>
+        <div className="col-3 mx-3">
+          <img
+            src="https://images.unsplash.com/photo-1659019480504-ed06c5cf2bab?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870"
+            alt=""
+            width="100%"
+          />
+        </div>
+        <div className="col-3 mx-3">
+          <img
+            src="https://images.unsplash.com/photo-1655913197736-6c68104b93ea?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870"
+            alt=""
+            width="100%"
+          />
+        </div>
+        <div className="col-3 mx-3">
+          <img
+            src="/logo.jpg"
+            alt=""
+            width="100%"
+          />
+        </div>
+        <div className="col-3 mx-3">
+          <img
+            src="https://images.unsplash.com/photo-1587854692152-cbe660dbde88?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=869"
+            alt=""
+            width="100%"
+          />
+        </div>
+        <div className="col-3 mx-3">
+          <img
+            src="https://images.unsplash.com/photo-1740592753807-43e58cdd9ece?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870"
+            alt=""
+            width="100%"
+          />
+        </div>
+        <div className="col-3 mx-3">
+          <img
+            src="https://images.unsplash.com/photo-1655313719624-7f1b8ccaa2e8?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870"
+            alt=""
+            width="100%"
+          />
+        </div>
+        <div className="col-3 mx-3">
+          <img
+            src="https://images.unsplash.com/photo-1705517243962-230c07db6b23?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870"
+            alt=""
+            width="100%"
+          />
+        </div>
+        <div className="col-3 mx-3">
+          <img
+            src="/logo.jpg"
+            alt=""
+            width="100%"
+          />
+        </div>
+        <div className="col-3 mx-3">
+          <img
+            src="https://images.unsplash.com/photo-1565071783280-719b01b29912?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=870"
+            alt=""
+            width="100%"
+          />
         </div>
       </div>
       {/* CARDS */}
